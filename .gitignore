@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# PyTorch / ML
+*.pt
+*.pth
+*.bin
+*.safetensors
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Node
+node_modules/
+.next/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Results (large data)
+results/*.json
+!results/.gitkeep
