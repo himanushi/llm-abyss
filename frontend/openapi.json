@@ -1,0 +1,1005 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "llm-abyss API",
+    "description": "\u30ed\u30fc\u30ab\u30eb LLM \u306e Mechanistic Interpretability \u30c4\u30fc\u30eb",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Health Check",
+        "operationId": "health_check_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/models/available": {
+      "get": {
+        "tags": [
+          "models"
+        ],
+        "summary": "Get Available Models",
+        "description": "\u53b3\u9078\u30e2\u30c7\u30eb\u30ea\u30b9\u30c8\u3092\u8fd4\u3059\u3002\u30c0\u30a6\u30f3\u30ed\u30fc\u30c9\u6e08\u307f\u304b\u3069\u3046\u304b\u3082\u4ed8\u4e0e\u3002",
+        "operationId": "get_available_models_api_models_available_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ModelInfoResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get Available Models Api Models Available Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/models/downloaded": {
+      "get": {
+        "tags": [
+          "models"
+        ],
+        "summary": "Get Downloaded",
+        "description": "\u30c0\u30a6\u30f3\u30ed\u30fc\u30c9\u6e08\u307f\u30e2\u30c7\u30eb\u4e00\u89a7\u3002",
+        "operationId": "get_downloaded_api_models_downloaded_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/DownloadedModelResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get Downloaded Api Models Downloaded Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/models/status": {
+      "get": {
+        "tags": [
+          "models"
+        ],
+        "summary": "Get Model Status",
+        "description": "\u73fe\u5728\u30ed\u30fc\u30c9\u4e2d\u306e\u30e2\u30c7\u30eb\u72b6\u614b\u3002",
+        "operationId": "get_model_status_api_models_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/models/load": {
+      "post": {
+        "tags": [
+          "models"
+        ],
+        "summary": "Load Model",
+        "description": "\u30e2\u30c7\u30eb\u3092\u30e1\u30e2\u30ea\u306b\u30ed\u30fc\u30c9\u3059\u308b\u3002",
+        "operationId": "load_model_api_models_load_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModelLoadRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/models/unload": {
+      "post": {
+        "tags": [
+          "models"
+        ],
+        "summary": "Unload Model",
+        "description": "\u73fe\u5728\u306e\u30e2\u30c7\u30eb\u3092\u30a2\u30f3\u30ed\u30fc\u30c9\u3059\u308b\u3002",
+        "operationId": "unload_model_api_models_unload_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/models/download/{model_name}": {
+      "get": {
+        "tags": [
+          "models"
+        ],
+        "summary": "Download Model",
+        "description": "\u30e2\u30c7\u30eb\u3092\u30c0\u30a6\u30f3\u30ed\u30fc\u30c9\u3059\u308b\u3002SSE \u3067\u9032\u6357\u3092\u30b9\u30c8\u30ea\u30fc\u30df\u30f3\u30b0\u3002",
+        "operationId": "download_model_api_models_download__model_name__get",
+        "parameters": [
+          {
+            "name": "model_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Model Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/experiments/attention": {
+      "post": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Attention Experiment",
+        "operationId": "attention_experiment_api_experiments_attention_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttentionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttentionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/experiments/logit-lens": {
+      "post": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Logit Lens Experiment",
+        "operationId": "logit_lens_experiment_api_experiments_logit_lens_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogitLensRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogitLensResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/experiments/neurons": {
+      "post": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Neurons Experiment",
+        "operationId": "neurons_experiment_api_experiments_neurons_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NeuronsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NeuronsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/experiments/generation": {
+      "post": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Generation Experiment",
+        "operationId": "generation_experiment_api_experiments_generation_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/experiments/tokenization": {
+      "post": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Tokenization Experiment",
+        "operationId": "tokenization_experiment_api_experiments_tokenization_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenizationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenizationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AttentionHeadResult": {
+        "properties": {
+          "layer": {
+            "type": "integer",
+            "title": "Layer"
+          },
+          "head": {
+            "type": "integer",
+            "title": "Head"
+          },
+          "pattern": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Pattern"
+          }
+        },
+        "type": "object",
+        "required": [
+          "layer",
+          "head",
+          "pattern"
+        ],
+        "title": "AttentionHeadResult"
+      },
+      "AttentionRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Text"
+          },
+          "layer": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Layer"
+          },
+          "head": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Head"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "AttentionRequest"
+      },
+      "AttentionResponse": {
+        "properties": {
+          "tokens": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tokens"
+          },
+          "heads": {
+            "items": {
+              "$ref": "#/components/schemas/AttentionHeadResult"
+            },
+            "type": "array",
+            "title": "Heads"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tokens",
+          "heads"
+        ],
+        "title": "AttentionResponse"
+      },
+      "DownloadedModelResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "size_gb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Size Gb"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "DownloadedModelResponse"
+      },
+      "GenerationRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Text"
+          },
+          "max_new_tokens": {
+            "type": "integer",
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Max New Tokens",
+            "default": 50
+          },
+          "temperature": {
+            "type": "number",
+            "maximum": 5.0,
+            "minimum": 0.01,
+            "title": "Temperature",
+            "default": 1.0
+          },
+          "top_k_tokens": {
+            "type": "integer",
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Top K Tokens",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "GenerationRequest"
+      },
+      "GenerationResponse": {
+        "properties": {
+          "input_text": {
+            "type": "string",
+            "title": "Input Text"
+          },
+          "generated_text": {
+            "type": "string",
+            "title": "Generated Text"
+          },
+          "tokens": {
+            "items": {
+              "$ref": "#/components/schemas/GenerationTokenResult"
+            },
+            "type": "array",
+            "title": "Tokens"
+          }
+        },
+        "type": "object",
+        "required": [
+          "input_text",
+          "generated_text",
+          "tokens"
+        ],
+        "title": "GenerationResponse"
+      },
+      "GenerationTokenResult": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "token_id": {
+            "type": "integer",
+            "title": "Token Id"
+          },
+          "probability": {
+            "type": "number",
+            "title": "Probability"
+          },
+          "top_alternatives": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Top Alternatives"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token",
+          "token_id",
+          "probability",
+          "top_alternatives"
+        ],
+        "title": "GenerationTokenResult"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "LogitLensLayerResult": {
+        "properties": {
+          "layer": {
+            "type": "integer",
+            "title": "Layer"
+          },
+          "top_tokens": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Top Tokens"
+          }
+        },
+        "type": "object",
+        "required": [
+          "layer",
+          "top_tokens"
+        ],
+        "title": "LogitLensLayerResult"
+      },
+      "LogitLensRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Text"
+          },
+          "top_k": {
+            "type": "integer",
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Top K",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "LogitLensRequest"
+      },
+      "LogitLensResponse": {
+        "properties": {
+          "tokens": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tokens"
+          },
+          "layers": {
+            "items": {
+              "$ref": "#/components/schemas/LogitLensLayerResult"
+            },
+            "type": "array",
+            "title": "Layers"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tokens",
+          "layers"
+        ],
+        "title": "LogitLensResponse"
+      },
+      "ModelInfoResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "params": {
+            "type": "string",
+            "title": "Params"
+          },
+          "n_layers": {
+            "type": "integer",
+            "title": "N Layers"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "downloaded": {
+            "type": "boolean",
+            "title": "Downloaded",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "params",
+          "n_layers",
+          "description"
+        ],
+        "title": "ModelInfoResponse"
+      },
+      "ModelLoadRequest": {
+        "properties": {
+          "model_name": {
+            "type": "string",
+            "title": "Model Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "model_name"
+        ],
+        "title": "ModelLoadRequest"
+      },
+      "ModelStatusResponse": {
+        "properties": {
+          "loaded": {
+            "type": "boolean",
+            "title": "Loaded"
+          },
+          "model_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Name"
+          },
+          "model_info": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelInfoResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "device": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Device"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loaded"
+        ],
+        "title": "ModelStatusResponse"
+      },
+      "NeuronActivation": {
+        "properties": {
+          "neuron_index": {
+            "type": "integer",
+            "title": "Neuron Index"
+          },
+          "activation": {
+            "type": "number",
+            "title": "Activation"
+          },
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "token_position": {
+            "type": "integer",
+            "title": "Token Position"
+          }
+        },
+        "type": "object",
+        "required": [
+          "neuron_index",
+          "activation",
+          "token",
+          "token_position"
+        ],
+        "title": "NeuronActivation"
+      },
+      "NeuronsRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Text"
+          },
+          "layer": {
+            "type": "integer",
+            "title": "Layer"
+          },
+          "top_k": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Top K",
+            "default": 20
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "layer"
+        ],
+        "title": "NeuronsRequest"
+      },
+      "NeuronsResponse": {
+        "properties": {
+          "tokens": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tokens"
+          },
+          "layer": {
+            "type": "integer",
+            "title": "Layer"
+          },
+          "top_neurons": {
+            "items": {
+              "$ref": "#/components/schemas/NeuronActivation"
+            },
+            "type": "array",
+            "title": "Top Neurons"
+          },
+          "activation_map": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Activation Map"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tokens",
+          "layer",
+          "top_neurons",
+          "activation_map"
+        ],
+        "title": "NeuronsResponse"
+      },
+      "TokenInfo": {
+        "properties": {
+          "token_id": {
+            "type": "integer",
+            "title": "Token Id"
+          },
+          "token_str": {
+            "type": "string",
+            "title": "Token Str"
+          },
+          "token_bytes": {
+            "type": "string",
+            "title": "Token Bytes"
+          },
+          "position": {
+            "type": "integer",
+            "title": "Position"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token_id",
+          "token_str",
+          "token_bytes",
+          "position"
+        ],
+        "title": "TokenInfo"
+      },
+      "TokenizationRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "TokenizationRequest"
+      },
+      "TokenizationResponse": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "token_count": {
+            "type": "integer",
+            "title": "Token Count"
+          },
+          "tokens": {
+            "items": {
+              "$ref": "#/components/schemas/TokenInfo"
+            },
+            "type": "array",
+            "title": "Tokens"
+          },
+          "vocab_size": {
+            "type": "integer",
+            "title": "Vocab Size"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "token_count",
+          "tokens",
+          "vocab_size"
+        ],
+        "title": "TokenizationResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
