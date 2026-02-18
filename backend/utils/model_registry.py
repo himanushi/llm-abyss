@@ -90,6 +90,22 @@ MODELS: dict[str, ModelInfo] = {
             n_layers=12,
             description="EleutherAI の GPT-Neo 125M。GPT-2 Small の代替として。",
         ),
+        ModelInfo(
+            id="qwen2.5-0.5b",
+            name="Qwen2.5 0.5B",
+            hf_name="Qwen/Qwen2.5-0.5B",
+            params="494M",
+            n_layers=24,
+            description="Qwen2.5 の最小モデル。日本語トークナイザ対応で日本語分析に最適。",
+        ),
+        ModelInfo(
+            id="qwen2.5-1.5b",
+            name="Qwen2.5 1.5B",
+            hf_name="Qwen/Qwen2.5-1.5B",
+            params="1.5B",
+            n_layers=28,
+            description="Qwen2.5 の小型モデル。日本語対応。メモリ8GB以上推奨。",
+        ),
     ]
 }
 
