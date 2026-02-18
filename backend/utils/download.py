@@ -22,7 +22,7 @@ def _get_repo_files(hf_name: str) -> list[dict]:
     api = HfApi()
     files = api.list_repo_files(hf_name)
     repo_info = api.repo_info(hf_name)
-    siblings = {s.rfilename: s.size for s in repo_info.siblings}
+    siblings = {s.rfilename: s.size or 0 for s in repo_info.siblings}
     return [
         {"filename": f, "size": siblings.get(f, 0)}
         for f in files
