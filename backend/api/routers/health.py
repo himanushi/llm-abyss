@@ -5,7 +5,7 @@ from utils.device import get_device_info
 router = APIRouter()
 
 
-@router.get("/health")
+@router.get("/health", tags=["health"])
 async def health_check():
     return {
         "status": "ok",
